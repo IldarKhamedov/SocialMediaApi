@@ -1,4 +1,4 @@
-package ru.khamedov.ildar.socialMedia.util.service;
+package ru.khamedov.ildar.socialMedia.service;
 
 
 import jakarta.annotation.Resource;

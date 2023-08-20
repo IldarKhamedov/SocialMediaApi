@@ -1,10 +1,8 @@
-package ru.khamedov.ildar.socialMedia.util.service;
+package ru.khamedov.ildar.socialMedia.service;
 
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import ru.khamedov.ildar.socialMedia.model.UserProfile;
 import ru.khamedov.ildar.socialMedia.util.Constant;
 

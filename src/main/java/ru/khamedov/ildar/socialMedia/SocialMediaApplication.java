@@ -17,8 +17,8 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import ru.khamedov.ildar.socialMedia.security.UserProfileDetailService;
-import ru.khamedov.ildar.socialMedia.util.service.TokenService;
-import ru.khamedov.ildar.socialMedia.util.service.UserProfileService;
+import ru.khamedov.ildar.socialMedia.service.TokenService;
+import ru.khamedov.ildar.socialMedia.service.UserProfileService;
 import ru.khamedov.ildar.socialMedia.util.Constant;
 
 import javax.crypto.SecretKey;
@@ -52,9 +52,12 @@ public class SocialMediaApplication {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/user/register").permitAll()
                         .requestMatchers("/api/user/token").permitAll()
                         .requestMatchers("/api/social/**").hasAnyAuthority(Constant.AUTHORITY_ROLE, Constant.AUTHORITY_SCOPE)
+                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))

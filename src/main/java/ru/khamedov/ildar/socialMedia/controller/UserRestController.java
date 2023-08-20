@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.khamedov.ildar.socialMedia.dto.UserProfileDTO;
 import ru.khamedov.ildar.socialMedia.dto.UserTokenDTO;
 import ru.khamedov.ildar.socialMedia.model.UserProfile;
-import ru.khamedov.ildar.socialMedia.util.service.TokenService;
-import ru.khamedov.ildar.socialMedia.util.service.UserProfileService;
+import ru.khamedov.ildar.socialMedia.service.TokenService;
+import ru.khamedov.ildar.socialMedia.service.UserProfileService;
 
 
 @RestController
