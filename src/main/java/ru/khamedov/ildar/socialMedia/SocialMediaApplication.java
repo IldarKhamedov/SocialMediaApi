@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.khamedov.ildar.socialMedia.filter.TransactionFilter;
 import ru.khamedov.ildar.socialMedia.security.UserProfileDetailService;
 import ru.khamedov.ildar.socialMedia.service.*;
 import ru.khamedov.ildar.socialMedia.util.Constant;
@@ -111,5 +112,8 @@ public class SocialMediaApplication {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
+    @Bean
+    public TransactionFilter transactionFilter(){return new TransactionFilter();}
 
 }

@@ -34,31 +34,30 @@ public class PostService {
         return post;
     }
 
-    private Post getPost(Long postId){
+    public boolean addImage(Long postId, List<ImageFileDTO> imageFileDTOList){
         Post post=postRepository.findById(postId).get();
-        if(post == null){
-            return null;
-        }
-        return post;
-    }
-
-    public void addImage(Long postId, List<ImageFileDTO> imageFileDTOList){
-        Post post=getPost(postId);
         if(post == null || imageFileDTOList.isEmpty()){
-            return;
+            return false;
         }
         List<ImageFile> imageFileList=imageFileDTOList.stream().map(i -> modelMapperService.converterToImageFile(i)).collect(Collectors.toList());
         imageFileList.stream().forEach(i->i.setPost(post));
         post.getImageFileList().addAll(imageFileList);
         postRepository.save(post);
+        return true;
     }
 
     public boolean deletePost(Long postId){
+        if(postRepository.findById(postId).isEmpty()){
+            return false;
+        }
         postRepository.deleteById(postId);
         return true;
     }
 
     public boolean updatePostById(Long postId,String text){
+        if(postRepository.findById(postId).isEmpty()){
+            return false;
+        }
         Post post=postRepository.findById(postId).get();
         post.setText(text);
         postRepository.save(post);

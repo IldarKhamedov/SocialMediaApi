@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.khamedov.ildar.socialMedia.dto.MessageDTO;
+import ru.khamedov.ildar.socialMedia.model.communication.Message;
 import ru.khamedov.ildar.socialMedia.model.communication.Proposal;
 import ru.khamedov.ildar.socialMedia.service.CommunicationService;
 
@@ -23,26 +24,23 @@ public class CommunicationRestController {
 
     @PutMapping("/process/proposal/{id}/{isAgreed}")
     public ResponseEntity getProposals(@PathVariable(required = true)Long id,@PathVariable(required = true)boolean isAgreed){
-        boolean decision=communicationService.processProposal(id,isAgreed);
-        return new ResponseEntity(decision,HttpStatus.OK);
+        return new ResponseEntity(communicationService.processProposal(id,isAgreed),HttpStatus.OK);
     }
 
     @PutMapping("/refusal/proposal/{userName}")
     public ResponseEntity refusalFromProposalByUser(@PathVariable(required = true)String userName){
-        communicationService.deleteFromSubscribers(userName);
-        return new ResponseEntity<>("test",HttpStatus.OK);
+        return new ResponseEntity<>(communicationService.deleteFromSubscribers(userName),HttpStatus.OK);
     }
 
     @PutMapping("/delete/friends/{userName}")
     public ResponseEntity deleteFromFriendsByUser(@PathVariable(required = true)String userName){
-communicationService.deleteFromFriends(userName);
-        return new ResponseEntity<>("test",HttpStatus.OK);
+        return new ResponseEntity<>(communicationService.deleteFromFriends(userName),HttpStatus.OK);
     }
 
     @PostMapping("/send/message/{userName}")
     public ResponseEntity sendMessage(@PathVariable(required = true)String userName, @RequestBody MessageDTO messageDTO){
-communicationService.createMessage(userName,messageDTO.getText());
-        return new ResponseEntity<>("test",HttpStatus.OK);
+    Message message=communicationService.createMessage(userName,messageDTO.getText());
+        return new ResponseEntity<>(message.getId(),HttpStatus.OK);
     }
 
     @GetMapping("/messages/{userName}")

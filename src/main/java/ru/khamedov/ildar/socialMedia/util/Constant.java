@@ -18,4 +18,8 @@ public class Constant {
 
     public static final String ERROR_MESSAGE_NO_SUCH_ELEMENT="User not exists";
 
+    public static final String ERROR_MESSAGE_VALID_NAME=" name is used";
+
+    public static final String ERROR_MESSAGE_VALID_EMAIL=" email not valid";
+
 }

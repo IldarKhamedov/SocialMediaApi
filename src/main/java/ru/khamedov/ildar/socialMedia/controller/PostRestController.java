@@ -38,8 +38,7 @@ public class PostRestController {
 
     @PutMapping("/addImage/{postId}")
     public ResponseEntity addImage(@RequestBody List<ImageFileDTO> imageFileDTOList, @PathVariable(required = true)Long postId){
-        postService.addImage(postId,imageFileDTOList);
-        return new ResponseEntity<>(postId,HttpStatus.OK);
+        return new ResponseEntity<>(postService.addImage(postId,imageFileDTOList),HttpStatus.OK);
     }
 
     @GetMapping("/view/{userName}")
@@ -49,13 +48,11 @@ public class PostRestController {
     }
     @DeleteMapping("delete/{postId}")
     public ResponseEntity deletePostById(@PathVariable(required = true)Long postId){
-        boolean isDeleted=postService.deletePost(postId);
-        return new ResponseEntity<>(isDeleted,HttpStatus.OK);
+        return new ResponseEntity<>(postService.deletePost(postId),HttpStatus.OK);
     }
 
     @PutMapping("/update/{postId}")
     public ResponseEntity updatePost(@RequestBody UpdatePostDTO updatePostDTO, @PathVariable(required = true)Long postId){
-        boolean isUpdated=postService.updatePostById(postId,updatePostDTO.getText());
-        return new ResponseEntity<>(isUpdated,HttpStatus.OK);
+        return new ResponseEntity<>(postService.updatePostById(postId,updatePostDTO.getText()),HttpStatus.OK);
     }
 }

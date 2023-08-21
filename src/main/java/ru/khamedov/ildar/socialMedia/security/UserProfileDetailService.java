@@ -6,7 +6,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.khamedov.ildar.socialMedia.model.UserProfile;
 import ru.khamedov.ildar.socialMedia.repository.UserProfileRepository;
@@ -27,7 +26,7 @@ public class UserProfileDetailService implements UserDetailsService {
     private AuthService authService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         ArrayList<GrantedAuthority> authorities = new ArrayList<>();
         UserProfile userProfile =authService.getUserByName(username);
         authorities.add(new SimpleGrantedAuthority(Constant.AUTHORITY_ROLE));

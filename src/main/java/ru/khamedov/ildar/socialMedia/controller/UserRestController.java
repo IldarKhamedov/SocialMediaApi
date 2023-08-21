@@ -30,11 +30,8 @@ public class UserRestController {
 
     @PostMapping("/token")
     public ResponseEntity token(@RequestBody UserTokenDTO userTokenDTO) {
-        String token="";
         UserProfile userProfile=userProfileService.getUserForToken(userTokenDTO);
-        if(userProfile != null){
-            token = tokenService.createToken(userProfile);
-        }
+        String token = tokenService.createToken(userProfile);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 }

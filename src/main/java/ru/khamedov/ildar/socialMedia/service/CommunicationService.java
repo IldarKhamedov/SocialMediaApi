@@ -66,30 +66,40 @@ public class CommunicationService {
 
     public boolean processProposal(Long id, boolean isAgreed){
         Proposal proposal=proposalRepository.findProposalById(id);
-        proposal.setProcessed(IS_APPLIED);
-        proposal.setApprovedByReceiver(isAgreed);
-        addingToFriends(proposal);
-        proposalRepository.save(proposal);
-        return proposal.isProcessed() && proposal.isApprovedByReceiver();
+        if (proposal != null) {
+            proposal.setProcessed(IS_APPLIED);
+            proposal.setApprovedByReceiver(isAgreed);
+            addingToFriends(proposal);
+            proposalRepository.save(proposal);
+        }
+        return proposal != null && proposal.isProcessed() && proposal.isApprovedByReceiver();
     }
 
-    public void deleteFromSubscribers(String userName){
+    public boolean deleteFromSubscribers(String userName){
         Proposal proposal=proposalRepository.findProposalByActiveAndNotProcessed(authService.getUserProfile(),authService.getUserByName(userName));
-        proposal.setProcessed(IS_APPLIED);
-        proposal.setActiveBySender(IS_ACTIVE_BY_SENDER);
-        proposalRepository.save(proposal);
-        proposal.getReceiver().getSubscribers().remove(proposal.getSender());
-        userProfileRepository.save(proposal.getReceiver());
+        if(proposal != null){
+            proposal.setProcessed(IS_APPLIED);
+            proposal.setActiveBySender(IS_ACTIVE_BY_SENDER);
+            proposalRepository.save(proposal);
+            proposal.getReceiver().getSubscribers().remove(proposal.getSender());
+            userProfileRepository.save(proposal.getReceiver());
+        }
+        return proposal != null && proposal.isProcessed() && (!proposal.isActiveBySender());
+
     }
 
-    public void deleteFromFriends(String userName){
+    public boolean deleteFromFriends(String userName){
         UserProfile who=authService.getUserProfile();
         UserProfile whom=authService.getUserByName(userName);
+        if(!who.getFriends().contains(whom)){
+            return false;
+        }
         who.getFriends().remove(whom);
         whom.getFriends().remove(who);
         whom.getSubscribers().remove(who);
         userProfileRepository.save(whom);
         userProfileRepository.save(who);
+        return true;
     }
 
     private void fillSenderReceiver(Sending sending,String receiverName){

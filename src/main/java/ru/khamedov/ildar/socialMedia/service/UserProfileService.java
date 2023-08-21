@@ -31,11 +31,14 @@ public class UserProfileService {
 
 
     public UserProfile createUser(UserProfileDTO userProfileDTO){
-        UserProfile userProfile=null;
-        if(resolveName(userProfileDTO.getName()) && isValidEmail(userProfileDTO.getEmail())){
-            userProfile=modelMapperService.converterToUser(userProfileDTO);
-            userProfileRepository.save(userProfile);
+        if(!resolveName(userProfileDTO.getName())){
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST,userProfileDTO.getName()+Constant.ERROR_MESSAGE_VALID_NAME);
         }
+        if(!isValidEmail(userProfileDTO.getEmail())){
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST,userProfileDTO.getEmail()+Constant.ERROR_MESSAGE_VALID_EMAIL);
+        }
+        UserProfile userProfile=modelMapperService.converterToUser(userProfileDTO);
+        userProfileRepository.save(userProfile);
         return userProfile;
     }
 
