@@ -1,5 +1,7 @@
 package ru.khamedov.ildar.socialMedia.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import ru.khamedov.ildar.socialMedia.service.UserProfileService;
 
 @RestController
 @RequestMapping("/api/user")
+@Tag(name = "Аутентификация и авторизация")
 public class UserRestController {
 
     @Resource
@@ -22,6 +25,7 @@ public class UserRestController {
     private TokenService tokenService;
 
     @PostMapping("/register")
+    @Operation(summary = "Пользователи могут зарегистрироваться, указав имя пользователя, электронную почту и пароль")
     public ResponseEntity<?> create(@RequestBody UserProfileDTO userProfileDTO) {
         UserProfile userProfile = userProfileService.createUser(userProfileDTO);
         String token = tokenService.createToken(userProfile);
@@ -29,6 +33,7 @@ public class UserRestController {
     }
 
     @PostMapping("/token")
+    @Operation(summary = "Получение токена")
     public ResponseEntity token(@RequestBody UserTokenDTO userTokenDTO) {
         UserProfile userProfile=userProfileService.getUserForToken(userTokenDTO);
         String token = tokenService.createToken(userProfile);

@@ -1,6 +1,7 @@
 package ru.khamedov.ildar.socialMedia.dto;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Пользователи могут создавать новые посты, указывая текст, заголовок и прикрепляя изображения")
 public class PostDTO {
 
     private String title;
