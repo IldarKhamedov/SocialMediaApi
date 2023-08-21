@@ -3,12 +3,14 @@ package ru.khamedov.ildar.socialMedia.service;
 
 import jakarta.annotation.Resource;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.HttpClientErrorException;
 import ru.khamedov.ildar.socialMedia.dto.UserProfileDTO;
 import ru.khamedov.ildar.socialMedia.dto.UserTokenDTO;
 import ru.khamedov.ildar.socialMedia.model.UserProfile;
 import ru.khamedov.ildar.socialMedia.repository.UserProfileRepository;
-
+import ru.khamedov.ildar.socialMedia.util.Constant;
 
 
 public class UserProfileService {
@@ -21,6 +23,12 @@ public class UserProfileService {
 
     @Resource
     private ModelMapperService modelMapperService;
+
+    @Resource
+    private AuthService authService;
+
+
+
 
     public UserProfile createUser(UserProfileDTO userProfileDTO){
         UserProfile userProfile=null;
@@ -40,10 +48,11 @@ public class UserProfileService {
     }
 
     public UserProfile getUserForToken(UserTokenDTO userTokenDTO){
-        UserProfile userProfile=userProfileRepository.findById(userTokenDTO.getName()).get();
-        if(userProfile != null && passwordEncoder.matches(userTokenDTO.getPassword(),userProfile.getPassword())){
-            return userProfile;
+        UserProfile userProfile=authService.getUserByName(userTokenDTO.getName());
+        if(!passwordEncoder.matches(userTokenDTO.getPassword(),userProfile.getPassword())){
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED,Constant.ERROR_MESSAGE_Login+userTokenDTO.getName());
         }
-        return null;
+        return userProfile;
     }
+
 }

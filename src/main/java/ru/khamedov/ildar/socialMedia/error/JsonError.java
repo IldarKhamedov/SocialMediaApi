@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Error {
+public class JsonError {
+
+    private int code;
 
     private String message;
-
-    private String code;
 }

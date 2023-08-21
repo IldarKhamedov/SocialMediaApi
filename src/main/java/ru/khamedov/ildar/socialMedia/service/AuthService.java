@@ -22,6 +22,10 @@ public class AuthService {
         } else {
             name = authentication.getName();
         }
-        return userProfileRepository.findById(name).get();
+        return getUserByName(name);
+    }
+
+    public UserProfile getUserByName (String userName){
+        return userProfileRepository.findById(userName).get();
     }
 }
