@@ -1,10 +1,7 @@
 package ru.khamedov.ildar.socialMedia.model.post;
 
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,4 +23,7 @@ public class ImageFile extends AbstractPersistable<Long> {
 
     @Basic(optional = false)
     private String contentType;
+
+    @ManyToOne(optional = false)
+    private Post post;
 }

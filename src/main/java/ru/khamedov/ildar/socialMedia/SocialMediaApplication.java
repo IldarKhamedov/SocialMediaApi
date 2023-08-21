@@ -17,8 +17,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import ru.khamedov.ildar.socialMedia.security.UserProfileDetailService;
-import ru.khamedov.ildar.socialMedia.service.TokenService;
-import ru.khamedov.ildar.socialMedia.service.UserProfileService;
+import ru.khamedov.ildar.socialMedia.service.*;
 import ru.khamedov.ildar.socialMedia.util.Constant;
 
 import javax.crypto.SecretKey;
@@ -46,6 +45,15 @@ public class SocialMediaApplication {
     public TokenService tokenService() {
         return new TokenService();
     }
+
+    @Bean
+    public ModelMapperService modelMapperService(){ return new ModelMapperService();}
+
+    @Bean
+    public PostService postService(){return new PostService();}
+
+    @Bean
+    public AuthService authService(){return new AuthService();}
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
