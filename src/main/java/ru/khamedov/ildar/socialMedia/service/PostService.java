@@ -1,12 +1,16 @@
 package ru.khamedov.ildar.socialMedia.service;
 
 import jakarta.annotation.Resource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import ru.khamedov.ildar.socialMedia.dto.ImageFileDTO;
 import ru.khamedov.ildar.socialMedia.dto.PostDTO;
+import ru.khamedov.ildar.socialMedia.model.UserProfile;
 import ru.khamedov.ildar.socialMedia.model.post.ImageFile;
 import ru.khamedov.ildar.socialMedia.model.post.Post;
 import ru.khamedov.ildar.socialMedia.repository.PostRepository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +24,7 @@ public class PostService {
 
     @Resource
     private AuthService authService;
+
 
     public Post createPost(PostDTO postDTO){
         Post post=modelMapperService.converterToPost(postDTO);
@@ -58,5 +63,10 @@ public class PostService {
         post.setText(text);
         postRepository.save(post);
         return true;
+    }
+
+    public List<PostDTO> getPostByFilterList(UserProfile user,Instant instant, int page, int limit){
+        List<Post> postList = postRepository.findPostByInstant(user,instant,PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "created")));
+        return postList.stream().map(p->modelMapperService.converterToPostDTO(p)).collect(Collectors.toList());
     }
 }

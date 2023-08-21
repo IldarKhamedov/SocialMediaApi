@@ -3,13 +3,17 @@ package ru.khamedov.ildar.socialMedia.service;
 import jakarta.annotation.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
+import ru.khamedov.ildar.socialMedia.dto.MessagesDTO;
 import ru.khamedov.ildar.socialMedia.model.UserProfile;
 import ru.khamedov.ildar.socialMedia.model.communication.Message;
 import ru.khamedov.ildar.socialMedia.model.communication.Proposal;
 import ru.khamedov.ildar.socialMedia.model.communication.Sending;
+import ru.khamedov.ildar.socialMedia.repository.MessageRepository;
 import ru.khamedov.ildar.socialMedia.repository.ProposalRepository;
 import ru.khamedov.ildar.socialMedia.repository.UserProfileRepository;
 import ru.khamedov.ildar.socialMedia.util.Constant;
+
+import java.util.List;
 
 public class CommunicationService {
 
@@ -24,6 +28,12 @@ public class CommunicationService {
 
     @Resource
     private UserProfileRepository userProfileRepository;
+
+    @Resource
+    private MessageRepository messageRepository;
+
+    @Resource
+    private ModelMapperService modelMapperService;
 
     private static final boolean IS_APPLIED=true;
 
@@ -96,6 +106,13 @@ public class CommunicationService {
         if(!message.getSender().getFriends().contains(message.getReceiver())){
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST,receiver+Constant.ERROR_MESSAGE_NOT_FRIEND);
         }
+        messageRepository.save(message);
         return message;
+    }
+
+    public List<MessagesDTO> getMessagesByUser(String userName){
+        UserProfile userOne=authService.getUserProfile();
+        UserProfile userTwo=authService.getUserByName(userName);
+        return modelMapperService.converterToMessagesDTO(messageRepository.findByUserName(userOne.getName(), userTwo.getName()));
     }
 }

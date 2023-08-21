@@ -34,6 +34,6 @@ public class Post extends AbstractPersistable<Long> {
 
     private Instant created= Instant.now();
 
-    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<ImageFile> imageFileList=new ArrayList<>();
 }

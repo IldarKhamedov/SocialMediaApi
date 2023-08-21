@@ -44,4 +44,9 @@ communicationService.deleteFromFriends(userName);
 communicationService.createMessage(userName,messageDTO.getText());
         return new ResponseEntity<>("test",HttpStatus.OK);
     }
+
+    @GetMapping("/messages/{userName}")
+    public ResponseEntity getMessagesByUser(@PathVariable(required = true)String userName){
+        return new ResponseEntity<>(communicationService.getMessagesByUser(userName),HttpStatus.OK);
+    }
 }
